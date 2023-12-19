@@ -1,0 +1,124 @@
+@import "../var.css";
+
+.container {
+  width: 320px;
+  height: 450px;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  justify-content: space-between;
+  position: relative;
+  /* From https://css.glass */
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5.1px);
+  -webkit-backdrop-filter: blur(5.1px);
+  border: 1px solid rgba(255, 255, 255, 0.21);
+}
+
+.container__background {
+  content: "";
+  position: absolute;
+  width: 500px;
+  height: 500px;
+  background: var(--linear-background);
+  z-index: -1;
+  animation-name: borderMove;
+  animation-duration: 20s;
+  animation-iteration-count: infinite;
+}
+@keyframes borderMove {
+  0% {
+    border-radius: 31% 69% 59% 41% / 46% 49% 51% 54%;
+    transform: rotate(90deg);
+  }
+  25% {
+    border-radius: 70% 30% 70% 30% / 28% 76% 24% 72%;
+    transform: rotate(180deg);
+  }
+  50% {
+    border-radius: 28% 72% 61% 39% / 59% 42% 58% 41%;
+    transform: rotate(270deg);
+  }
+  75% {
+    border-radius: 67% 33% 38% 62% / 71% 49% 51% 29%;
+    transform: rotate(360deg);
+  }
+  100% {
+    border-radius: 31% 69% 59% 41% / 46% 49% 51% 54%;
+    transform: rotate(90deg);
+  }
+}
+
+.swap {
+  display: flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  border: none;
+  outline: none;
+  position: relative;
+  left: 2rem;
+  cursor: pointer;
+}
+.swap img {
+  align-self: center;
+  justify-self: center;
+  position: absolute;
+  left: 0.5rem;
+}
+
+.error {
+  visibility: hidden;
+}
+
+.finalAmount {
+  margin-left: 0.8rem;
+  color: rgba(0, 0, 0, 0.4);
+}
+
+.purchase {
+  cursor: pointer;
+  position: relative;
+  padding: 0.5rem 0.8rem;
+  width: 80%;
+  align-self: center;
+  font-size: 18px;
+  color: rgb(230, 230, 230);
+
+  border: 2px solid rgb(102, 212, 172);
+  border-radius: 34px;
+  background-color: transparent;
+  font-weight: 400;
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+  overflow: hidden;
+}
+
+.purchase::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  margin: auto;
+  width: 50px;
+  height: 50px;
+  border-radius: inherit;
+  scale: 0;
+  z-index: -1;
+  background-color: rgb(102, 212, 172);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.purchase:hover::before {
+  scale: 6;
+}
+
+.purchase:hover {
+  scale: 1.1;
+  box-shadow: 0 0px 20px rgba(193, 163, 98, 0.4);
+}
+
+.purchase:active {
+  scale: 1;
+}

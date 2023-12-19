@@ -1,0 +1,17 @@
+:root {
+  --linear-background: linear-gradient(
+    45deg,
+    rgba(34, 164, 116, 1) 0%,
+    rgba(41, 47, 143, 1) 100%
+  );
+  --scroll-color: linear-gradient(
+    45deg,
+    rgba(34, 164, 116, 1) 0%,
+    rgba(41, 47, 143, 1) 100%
+  );
+  --scroll-color-hover: linear-gradient(
+    45deg,
+    rgb(93, 165, 139) 0%,
+    rgb(4, 13, 148) 100%
+  );
+}
