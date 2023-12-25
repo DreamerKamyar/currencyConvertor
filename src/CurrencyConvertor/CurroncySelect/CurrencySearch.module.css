@@ -61,9 +61,13 @@
   flex-direction: row-reverse;
   align-items: center;
   padding: 0.5rem 0.8rem;
-  background-color: rgba(0, 0, 0, 0.052);
+  background-color: rgb(239, 239, 239);
+  margin-right: 0.3rem;
   margin-bottom: 0.8rem;
   border-radius: inherit;
+  position: fixed;
+  z-index: 10;
+  padding-right: 0.3rem;
 }
 .search__input {
   flex-grow: 1;
@@ -80,6 +84,7 @@
   list-style: none;
   padding-right: 0;
   direction: rtl;
+  margin-top: 2.5rem;
 }
 .search__item {
   padding: 0.5rem 0.8rem;

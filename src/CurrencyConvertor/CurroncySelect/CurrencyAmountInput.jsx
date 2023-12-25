@@ -10,9 +10,7 @@ const CurrencyAmountInput = ({ firstCoin }) => {
 
   const inputChangeHandler = (event) => {
     let value = parseFloat(event.target.value) || "";
-
     if (firstCoin) {
-      console.log("test");
       dispatch(coinInputAction.setFirstInput(value));
       dispatch(
         coinInputAction.setSocondInput(
@@ -20,7 +18,6 @@ const CurrencyAmountInput = ({ firstCoin }) => {
         )
       );
     } else {
-      console.log("here is the second input " + value);
       dispatch(coinInputAction.setSocondInput(value));
       dispatch(
         coinInputAction.setFirstInput(
@@ -31,7 +28,9 @@ const CurrencyAmountInput = ({ firstCoin }) => {
   };
   return (
     <div className={styles.container}>
-      <span className={styles.text}>پرداخت می کنید</span>
+      <span className={styles.text}>
+        {firstCoin ? " : این مقدار" : " : معادل است با "}
+      </span>
       <input
         type="number"
         placeholder="0"

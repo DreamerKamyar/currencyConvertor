@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { rial, bitcoin } from "../CurrencyConvertor/Services/GetCoins";
 const initialState = {
-  firstInput: 0,
-  secondInput: 0,
+  firstInput: "0",
+  secondInput: "0",
   firstCoin: rial,
   secondCoin: bitcoin,
 };

@@ -6,13 +6,13 @@ import { useEffect, useRef, useState } from "react";
 import { coinsConversion } from "./Services/Convert";
 import { useSelector, useDispatch } from "react-redux";
 import { coinInputAction } from "../store/convertSlice";
+import { useGetAllCoinsQuery } from "../store/CryptoApi";
 const CurrencyConvertor = () => {
-  const [allCoins, setAllCoins] = useState([]);
-
   const { firstCoin, secondCoin } = useSelector((state) => state.coinInput);
   const dispatch = useDispatch();
 
-  let convertionValue = useRef();
+  let convertionValue = useRef(coinsConversion(firstCoin, secondCoin));
+
   useEffect(() => {
     convertionValue.current = coinsConversion(firstCoin, secondCoin);
   }, [firstCoin, secondCoin]);
@@ -22,23 +22,14 @@ const CurrencyConvertor = () => {
     dispatch(coinInputAction.setSecondCoin(firstCoin));
   };
 
-  useEffect(() => {
-    GetCoins(setAllCoins);
-  }, [setAllCoins]);
-
   return (
     <>
       <div className={styles.container}>
-        <CurrencySelect
-          allCoins={allCoins}
-          defaultCoin={rial}
-          firstCoin={true}
-        ></CurrencySelect>
+        <CurrencySelect defaultCoin={rial} firstCoin={true}></CurrencySelect>
         <button className={styles.swap} onClick={swapChangeHanler}>
           <img src={swapIcon} alt="" />
         </button>
         <CurrencySelect
-          allCoins={allCoins}
           defaultCoin={bitcoin}
           firstCoin={false}
         ></CurrencySelect>
