@@ -5,19 +5,65 @@ import { coinInputAction } from "../../store/convertSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useGetAllCoinsQuery } from "../../store/CryptoApi";
 import { rial } from "../Services/GetCoins";
+import test from "../../assets/cryptologo/ALGO.png";
+import { all } from "axios";
 const CurrencySearch = ({ firstCoin }) => {
   // states
   const [search, setSearch] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const coins = useSelector((state) => state.coinInput);
   const { data: cryptoList } = useGetAllCoinsQuery();
-  const [allCoins, setAllCoins] = useState(cryptoList?.data?.coins);
-  // useEffect(() => {
-  //   cryptoList?.data?.coins.unshift(rial);
-  // }, [cryptoList]);
-  console.log(rial);
+  const [test, setTest] = useState([]);
+  const [allCoins, setAllCoins] = useState(test);
+  const [coinFullName, setCoinFullName] = useState({});
+  /*
+
+  new function code 
+
+
+  */
+
   useEffect(() => {
-    const filteredCoins = cryptoList?.data?.coins.filter((coin) => {
+    const fetchFullName = async () => {
+      const response = await fetch(
+        "https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies.json"
+      );
+      const data = await response.json();
+      setCoinFullName(data);
+    };
+    fetchFullName();
+  }, [setCoinFullName]);
+
+  const coinArray = [];
+  useEffect(() => {
+    if (cryptoList?.RAW) {
+      Object.keys(cryptoList.RAW)?.forEach((coin) => {
+        // console.log(cryptoList.RAW[coin].USD.PRICE.toFixed(3));
+
+        if (coinFullName[coin.toLocaleLowerCase()]) {
+          const dynamicIconURL = `/src/assets/cryptologo/${coin}.png`;
+          // ../../assets/cryptologo/ALGO.png
+          coinArray.push({
+            name: coinFullName[coin.toLocaleLowerCase()],
+            price: cryptoList.RAW[coin].USD.PRICE.toFixed(3),
+            iconUrl: dynamicIconURL,
+            uudi: coin,
+            symbol: cryptoList.RAW[coin].USD.FROMSYMBOL,
+          });
+        }
+      });
+    }
+    setAllCoins(coinArray);
+  }, [cryptoList, setAllCoins, coinFullName]);
+  /*
+
+  end function code 
+
+
+  */
+
+  useEffect(() => {
+    const filteredCoins = allCoins?.filter((coin) => {
       return coin.name.toLowerCase().includes(search.toLowerCase());
     });
     setAllCoins(filteredCoins);
@@ -39,6 +85,7 @@ const CurrencySearch = ({ firstCoin }) => {
   };
 
   const selectCoinHandler = (item) => {
+    setIsOpen(!isOpen);
     if (firstCoin) {
       dispatch(coinInputAction.setFirstCoin(item));
     } else {
@@ -79,15 +126,16 @@ const CurrencySearch = ({ firstCoin }) => {
           {allCoins?.map((coin) => {
             return (
               <li
-                key={Math.random()}
+                key={coin.uuid}
                 className={styles.search__item}
                 onClick={() => selectCoinHandler(coin)}
               >
                 <img
-                  src={coin.iconUrl}
+                  src={require(coin.iconUrl)}
                   className={styles.selected__image}
                   alt=""
                 />
+
                 <p className={styles.selected__text}>{coin.name}</p>
                 <span className={styles.selected__symbol}>({coin.symbol})</span>
               </li>

@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import styles from "./CurrencyAmountInput.module.css";
-import { coinsConversion } from "../Services/Convert";
+import { addCommasToNumberString, coinsConversion } from "../Services/Convert";
 import { useDispatch, useSelector } from "react-redux";
 import { coinInputAction } from "../../store/convertSlice";
 
@@ -12,31 +12,24 @@ const CurrencyAmountInput = ({ firstCoin }) => {
     let value = parseFloat(event.target.value) || "";
     if (firstCoin) {
       dispatch(coinInputAction.setFirstInput(value));
-      dispatch(
-        coinInputAction.setSocondInput(
-          coinsConversion(inputSlice.firstCoin, inputSlice.secondCoin, value)
-        )
-      );
     } else {
       dispatch(coinInputAction.setSocondInput(value));
-      dispatch(
-        coinInputAction.setFirstInput(
-          coinsConversion(inputSlice.secondCoin, inputSlice.firstCoin, value)
-        )
-      );
     }
   };
+  const outpuedValue = firstCoin
+    ? addCommasToNumberString(inputSlice.firstInput)
+    : addCommasToNumberString(inputSlice.secondInput);
   return (
     <div className={styles.container}>
       <span className={styles.text}>
         {firstCoin ? " : این مقدار" : " : معادل است با "}
       </span>
       <input
-        type="number"
+        type="string"
         placeholder="0"
         className={styles.input}
         onChange={inputChangeHandler}
-        value={firstCoin ? inputSlice.firstInput : inputSlice.secondInput}
+        value={outpuedValue}
       />
     </div>
   );

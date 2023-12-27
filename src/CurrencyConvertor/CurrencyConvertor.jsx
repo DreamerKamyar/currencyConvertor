@@ -1,7 +1,7 @@
 import styles from "./CurrencyConvertor.module.css";
 import { CurrencySelect } from "./CurroncySelect/CurrencySelect";
 import swapIcon from "../assets/icons/icons8-swap-24 (1).png";
-import GetCoins, { rial, bitcoin } from "./Services/GetCoins";
+import { rial, bitcoin } from "./Services/GetCoins";
 import { useEffect, useRef, useState } from "react";
 import { coinsConversion } from "./Services/Convert";
 import { useSelector, useDispatch } from "react-redux";
@@ -21,7 +21,6 @@ const CurrencyConvertor = () => {
     dispatch(coinInputAction.setFirstCoin(secondCoin));
     dispatch(coinInputAction.setSecondCoin(firstCoin));
   };
-
   return (
     <>
       <div className={styles.container}>
