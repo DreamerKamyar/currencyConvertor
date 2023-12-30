@@ -1,24 +1,32 @@
-import { useRef, useState } from "react";
 import styles from "./CurrencyAmountInput.module.css";
-import { addCommasToNumberString, coinsConversion } from "../Services/Convert";
 import { useDispatch, useSelector } from "react-redux";
 import { coinInputAction } from "../../store/convertSlice";
 
 const CurrencyAmountInput = ({ firstCoin }) => {
   const inputSlice = useSelector((state) => state.coinInput);
-  const dispatch = useDispatch();
 
+  const dispatch = useDispatch();
   const inputChangeHandler = (event) => {
-    let value = parseFloat(event.target.value) || "";
-    if (firstCoin) {
-      dispatch(coinInputAction.setFirstInput(value));
+    let value = event.target.value;
+    if (isNaN(value.split("").at(-1))) {
+      if (value.split("").at(-1) === undefined) {
+        if (firstCoin) {
+          dispatch(coinInputAction.setFirstInput("0"));
+        } else {
+          dispatch(coinInputAction.setSocondInput("0"));
+        }
+      } else {
+        return;
+      }
     } else {
-      dispatch(coinInputAction.setSocondInput(value));
+      if (firstCoin) {
+        dispatch(coinInputAction.setFirstInput(value));
+      } else {
+        dispatch(coinInputAction.setSocondInput(value));
+      }
     }
   };
-  const outpuedValue = firstCoin
-    ? addCommasToNumberString(inputSlice.firstInput)
-    : addCommasToNumberString(inputSlice.secondInput);
+
   return (
     <div className={styles.container}>
       <span className={styles.text}>
@@ -29,7 +37,7 @@ const CurrencyAmountInput = ({ firstCoin }) => {
         placeholder="0"
         className={styles.input}
         onChange={inputChangeHandler}
-        value={outpuedValue}
+        value={firstCoin ? inputSlice.firstInput : inputSlice.secondInput}
       />
     </div>
   );

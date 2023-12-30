@@ -1,8 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { rial, bitcoin } from "../CurrencyConvertor/Services/GetCoins";
 import {
-  addCommasToNumberString,
+  addComma,
   coinsConversion,
+  removeComma,
 } from "../CurrencyConvertor/Services/Convert";
 const initialState = {
   firstInput: 0,
@@ -15,27 +16,45 @@ const coinAmountInput = createSlice({
   initialState,
   reducers: {
     setFirstInput(state, action) {
-      state.firstInput = action.payload;
-
-      state.secondInput = coinsConversion(
-        state.firstCoin,
-        state.secondCoin,
-        action.payload
+      console.log(action.payload);
+      state.firstInput = addComma(Number(removeComma(action.payload)));
+      state.secondInput = addComma(
+        coinsConversion(
+          state.firstCoin,
+          state.secondCoin,
+          Number(removeComma(action.payload))
+        )
       );
     },
     setSocondInput(state, action) {
-      state.secondInput = action.payload;
-      state.firstInput = coinsConversion(
-        state.secondCoin,
-        state.firstCoin,
-        action.payload
+      state.secondInput = addComma(Number(removeComma(action.payload)));
+      state.firstInput = addComma(
+        coinsConversion(
+          state.secondCoin,
+          state.firstCoin,
+          Number(removeComma(action.payload))
+        )
       );
+      // state.secondInput = action.payload;
+      // state.firstInput = coinsConversion(
+      //   state.secondCoin,
+      //   state.firstCoin,
+      //   action.payload
+      // );
     },
     setFirstCoin(state, action) {
       return { ...state, firstCoin: { ...action.payload } };
     },
     setSecondCoin(state, action) {
       return { ...state, secondCoin: { ...action.payload } };
+    },
+    swap(state) {
+      return {
+        firstInput: initialState.firstInput,
+        secondInput: initialState.secondInput,
+        firstCoin: state.secondCoin,
+        secondCoin: state.firstCoin,
+      };
     },
   },
 });

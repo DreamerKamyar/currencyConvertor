@@ -5,17 +5,20 @@ export const coinsConversion = (firstCoin, secondCoin, userInput = 1) => {
   return String(result.toFixed(7));
 };
 
-export const addCommasToNumberString = (inputString) => {
-  let [integerPart, decimalPart] = String(inputString).split(".");
-  console.log(typeof inputString);
-
-  // Add commas to the integer part
-  integerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-  // Combine the integer and decimal parts with the dot
-  let resultString = decimalPart
-    ? `${integerPart}.${decimalPart}`
-    : integerPart;
-
-  return resultString;
+export const addComma = (inputNumber) => {
+  return Number(inputNumber).toLocaleString("en-US");
 };
+export const removeComma = (inputString) => {
+  const [firstPart, secondPart] = inputString.split(".");
+
+  if (inputString.includes(".")) {
+    return Number(firstPart.split(",").join("") + "." + secondPart);
+  } else {
+    return Number(firstPart.split(",").join(""));
+  }
+};
+export const test = (inputNumber) => {
+  return inputNumber.toLocaleString("en-US");
+};
+
+console.log(test(22222.32));

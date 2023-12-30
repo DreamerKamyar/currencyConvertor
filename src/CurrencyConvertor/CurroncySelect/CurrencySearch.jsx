@@ -13,9 +13,10 @@ const CurrencySearch = ({ firstCoin }) => {
   const [isOpen, setIsOpen] = useState(false);
   const coins = useSelector((state) => state.coinInput);
   const { data: cryptoList } = useGetAllCoinsQuery();
-  const [test, setTest] = useState([]);
-  const [allCoins, setAllCoins] = useState(test);
+  // console.log(cryptoList);
+  const [allCoins, setAllCoins] = useState([]);
   const [coinFullName, setCoinFullName] = useState({});
+  const [backUpCoins, setAllCoinsBackup] = useState([]);
   /*
 
   new function code 
@@ -34,27 +35,26 @@ const CurrencySearch = ({ firstCoin }) => {
     fetchFullName();
   }, [setCoinFullName]);
 
-  const coinArray = [];
   useEffect(() => {
+    const coinArray = [];
     if (cryptoList?.RAW) {
-      Object.keys(cryptoList.RAW)?.forEach((coin) => {
-        // console.log(cryptoList.RAW[coin].USD.PRICE.toFixed(3));
-
+      Object.keys(cryptoList.RAW).forEach((coin) => {
         if (coinFullName[coin.toLocaleLowerCase()]) {
-          const dynamicIconURL = `/src/assets/cryptologo/${coin}.png`;
-          // ../../assets/cryptologo/ALGO.png
+          const dynamicIconURL = `currencyConvertor/cryptologo/${coin}.png`;
           coinArray.push({
             name: coinFullName[coin.toLocaleLowerCase()],
             price: cryptoList.RAW[coin].USD.PRICE.toFixed(3),
             iconUrl: dynamicIconURL,
-            uudi: coin,
+            uuid: coin,
             symbol: cryptoList.RAW[coin].USD.FROMSYMBOL,
           });
         }
       });
+      coinArray.push(rial)
+      setAllCoins(coinArray);
+      setAllCoinsBackup(coinArray);
     }
-    setAllCoins(coinArray);
-  }, [cryptoList, setAllCoins, coinFullName]);
+  }, [cryptoList, setAllCoins, setAllCoinsBackup, coinFullName]);
   /*
 
   end function code 
@@ -63,11 +63,12 @@ const CurrencySearch = ({ firstCoin }) => {
   */
 
   useEffect(() => {
-    const filteredCoins = allCoins?.filter((coin) => {
+    const filteredCoins = backUpCoins?.filter((coin) => {
       return coin.name.toLowerCase().includes(search.toLowerCase());
     });
     setAllCoins(filteredCoins);
-  }, [cryptoList, search]);
+  }, [search]);
+
   let selectedCoin = {};
   if (firstCoin) {
     selectedCoin = coins.firstCoin;
@@ -123,7 +124,7 @@ const CurrencySearch = ({ firstCoin }) => {
           />
         </div>
         <ul className={styles.search__list}>
-          {allCoins?.map((coin) => {
+          {allCoins?.map(function (coin) {
             return (
               <li
                 key={coin.uuid}
@@ -135,7 +136,6 @@ const CurrencySearch = ({ firstCoin }) => {
                   className={styles.selected__image}
                   alt=""
                 />
-
                 <p className={styles.selected__text}>{coin.name}</p>
                 <span className={styles.selected__symbol}>({coin.symbol})</span>
               </li>

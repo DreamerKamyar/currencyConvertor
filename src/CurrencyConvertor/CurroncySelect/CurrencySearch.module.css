@@ -50,7 +50,7 @@
 }
 
 .search__container::-webkit-scrollbar-thumb {
-  background: var(--scroll-color);
+  background: #58dd93;
   border-radius: inherit;
 }
 .search__container::-webkit-scrollbar-thumb:hover {
